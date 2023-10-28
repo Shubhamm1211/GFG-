@@ -14,7 +14,7 @@ class Solution{
     vector<int> leaders(int a[], int n){
         // Code here
         vector<int>v;
-        int max = a[n - 1];
+        int max = INT_MIN;
         for(int i = n - 1; i >= 0; i--)
         {
             if(a[i] >= max)
