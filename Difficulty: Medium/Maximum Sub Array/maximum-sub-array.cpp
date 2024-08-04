@@ -8,44 +8,37 @@ using namespace std;
 // User function template for C++
 class Solution {
   public:
-    vector<int> findSubarray(int n, int arr[]) {
+    vector<int> findSubarray(int n, int a[]) {
         // code here
-       int maxSum=INT_MIN;
-    int sum=0;
-    int start=0;
-    int ansStart=-1;
-    int ansEnd=-1;
-    for(int i=0;i<n;i++){
-        if(arr[i]<0){
-            sum=0;
-            start=i+1;
-            continue;
+        int maxi=INT_MIN;
+        int sum=0;
+        int start=0,ansStart=-1,ansend=-1;
+        vector<int>ans;
+        for(int i=0;i<n;i++){
+            sum=sum+a[i];
+            if(a[i]<0){
+                start=i+1;
+                sum=0;
+                continue;
+            }
+            else if(sum>maxi){
+                ansStart=start;
+                ansend=i;
+                maxi=sum;
+            }
+            else if(sum==maxi){
+                if(i-start > ansend-ansStart){
+                    ansStart=start;
+                    ansend=i;
+                }
+            }
+            
         }
-        
-        sum+=arr[i];
-        
-        if(sum>maxSum){
-            maxSum=sum;
-            ansStart=start;
-            ansEnd=i;
+        for(int i=ansStart;i<=ansend;i++){
+            ans.push_back(a[i]);
         }
-        
-        else if(sum == maxSum)
-	        {
-	            if((i - start) > (ansEnd - ansStart))
-	            {
-	                ansStart = start;
-	                ansEnd = i;
-	            }
-	        }
-        
-    }
-    vector<int>v;
-    for(int i=ansStart;i<=ansEnd;i++){
-        v.push_back(arr[i]);
-    }
-    if(v.size()==0)return {-1};
-    return v;
+        if(ans.size()==0)return {};
+        return ans;
     }
 };
 
