@@ -11,7 +11,6 @@ class Solution {
     int n = arr1.size(), m = arr2.size();
     vector<int> ans;
 
-    // Merge both arrays into ans
     while (i < n && j < m) {
         if (arr1[i] < arr2[j]) {
             ans.push_back(arr1[i]);
@@ -22,19 +21,19 @@ class Solution {
         }
     }
 
-    // Add remaining elements of arr1
+    
     while (i < n) {
         ans.push_back(arr1[i]);
         i++;
     }
 
-    // Add remaining elements of arr2
+  
     while (j < m) {
         ans.push_back(arr2[j]);
         j++;
     }
 
-    // Return the k-th element (1-based index)
+
     return ans[k-1];
 }
 };
