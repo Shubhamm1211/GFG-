@@ -1,6 +1,7 @@
 //{ Driver Code Starts
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
+
 
 // } Driver Code Ends
 class Solution{
@@ -17,15 +18,15 @@ class Solution{
         return dp[ind1][ind2];
                                  
     }
-    int longestCommonSubstr (string text1, string text2, int n, int m)
+    int longestCommonSubstr (string text1, string text2)
     {
         // your code here
         int l1=text1.size();
         int l2=text2.size();
         vector<vector<int>>dp(l1,vector<int>(l2,-1));
         int ans=0;
-        for(int i=0;i<n;i++){
-            for(int j=0;j<m;j++){
+        for(int i=0;i<l1;i++){
+            for(int j=0;j<l2;j++){
                 solve(i,j,text1,text2,dp);
                 ans=max(ans,dp[i][j]);
             }
@@ -34,21 +35,18 @@ class Solution{
     }
 };
 
+
 //{ Driver Code Starts.
 
-int main()
-{
-    int t; cin >> t;
-    while (t--)
-    {
-        int n, m; cin >> n >> m;
+int main() {
+    int t;
+    cin >> t;
+    while (t--) {
         string s1, s2;
         cin >> s1 >> s2;
         Solution ob;
 
-        cout << ob.longestCommonSubstr (s1, s2, n, m) << endl;
+        cout << ob.longestCommonSubstr(s1, s2) << endl;
     }
 }
-// Contributed By: Pranay Bansal
-
 // } Driver Code Ends
