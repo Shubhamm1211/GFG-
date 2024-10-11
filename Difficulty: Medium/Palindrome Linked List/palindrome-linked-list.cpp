@@ -38,42 +38,43 @@ struct Node {
 class Solution {
   public:
     // Function to check whether the list is palindrome.
-    bool isPalindrome(Node *head) {
-    if (!head || !head->next) {
-        return true; // A single node or empty list is a palindrome
-    }
-    
-    // Step 1: Find the middle of the linked list
-    Node *slow = head, *fast = head;
-    while (fast && fast->next) {
-        slow = slow->next;
-        fast = fast->next->next;
-    }
-    
-    // Step 2: Reverse the second half of the linked list
-    Node *prev = nullptr, *next = nullptr;
-    while (slow) {
-        next = slow->next;
-        slow->next = prev;
-        prev = slow;
-        slow = next;
-    }
-    
-    // Step 3: Compare the first half with the reversed second half
-    Node *left = head;
-    Node *right = prev; // This is the head of the reversed second half
-    
-    while (right) {
-        if (left->data != right->data) {
-            return false;
+    Node *getmid(Node*head){
+        Node *slow = head, *fast = head;
+        while(fast and fast -> next){
+            slow = slow -> next;
+            fast = fast -> next -> next;
         }
-        left = left->next;
-        right = right->next;
+        return slow;
     }
-    
-    return true;
-}
-
+    Node *reverse(Node *head){
+        Node *prev = NULL;
+        Node *curr = head;
+        while(curr){
+            Node *forw = curr -> next;
+            curr -> next = prev;
+            prev = curr;
+            curr = forw;
+        }
+        return prev;
+    }
+    bool isPalindrome(Node *head) {
+        // Your code here
+        Node *mid = getmid(head);
+        Node *temp = mid;
+        mid = reverse(temp);
+        
+        Node *ptr1 = head;
+        Node *ptr2 = mid;
+        while(ptr1 and ptr2){
+            if(ptr1 -> data != ptr2 -> data){
+                return false;
+            }
+            ptr1 = ptr1 -> next;
+            ptr2 = ptr2 -> next;
+        }
+        return true;
+        
+    }
 };
 
 
