@@ -5,36 +5,32 @@ using namespace std;
 
 // } Driver Code Ends
 
-
-bool compare(pair<int,int>&a,pair<int,int>&b){
-        
-        if(a.second==b.second)return a.first<b.first;
-        return a.second<b.second;
+bool cmp(pair<int,int>&a, pair<int,int>&b){
+    if(a.second == b.second){
+        return a.first < b.first;
     }
+    return a.second < b.second;
+}
 class Solution {
   public:
-//   static bool compare(pair<int,int>&a,pair<int,int>&b){
-//       if(a.second==b.second)
-//       return a.first<b.first;
-//       return a.second<b.second;
-//   }
+    // Function to find the maximum number of meetings that can
+    // be performed in a meeting room.
     int maxMeetings(int n, int start[], int end[]) {
-        vector<pair<int,int>>vec;
-        for(int i=0;i<n;i++)
-        vec.push_back({start[i],end[i]});
-        sort(vec.begin(),vec.end(),compare); 
-        // for(auto x:vec){
-        //     cout<<x.first<<" "<<x.second<<endl;
-        // }
-        int ans=1;
-        int prev=0;
-        for(int i=1;i<n;i++){
-            if(vec[i].first>vec[prev].second){
+        // Your code here
+        vector<pair<int,int>> v;
+        for(int i = 0; i < n; i++){
+            v.push_back({start[i],end[i]});
+        }
+        sort(v.begin(),v.end(),cmp);
+        int ans = 1;
+        int ends = v[0].second;
+        for(int i = 1; i < n; i++){
+            if(v[i].first > ends){
                 ans++;
-                prev=i;
+                ends = v[i].second;
             }
         }
-       return ans;
+        return ans;
     }
 };
 
