@@ -6,27 +6,25 @@ using namespace std;
 // } Driver Code Ends
 class Solution {
   public:
-    int solve(int ind, int k, vector<int>&arr, vector<int>&dp){
-        int n = arr.size();
-        if(ind==0){
+    int solve(vector<int>&arr,int k, int ind,vector<int>&dp){
+        if(ind == 0){
             return 0;
         }
-        if(dp[ind] != -1){
-            return dp[ind];
+        if (dp[ind] != -1) return dp[ind];
+        int p1 = INT_MAX;
+        for(int i = 1; i <= k; i++){
+            if(ind - i >= 0){
+                int t = solve(arr,k, ind - i,dp) + abs(arr[ind] - arr[ind - i]);
+                p1 = min(p1,t);
+            }
         }
-        int mini = 1e9;
-        for(int i = 1 ;i <= k ; i++){
-            if(ind - i >= 0)
-            mini=min(mini,solve(ind-i,k,arr,dp) + abs(arr[ind]-arr[ind-i]));
-        }
-        return dp[ind] = mini;
+        return dp[ind] = p1;
     }
     int minimizeCost(int k, vector<int>& arr) {
         // Code here
         int n = arr.size();
-        vector<int> dp (n+1,-1);
-        return solve(n-1,k,arr,dp);
-        
+        vector <int> dp(n + 1,-1);
+        return solve(arr,k,n - 1,dp);
     }
 };
 
