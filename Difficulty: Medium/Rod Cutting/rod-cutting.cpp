@@ -10,30 +10,22 @@ using namespace std;
 
 class Solution{
   public:
-    int solve(int ind,int price[],vector<int>&  len,int tar,vector<vector<int>>&dp){
-        if(dp[ind][tar]!=-1)return dp[ind][tar];
-        if(ind==0){
-            if(len[0]<=tar){
-                return (tar/len[ind])*price[ind];
-            }
-            else return 0;
+    int solve(int ind , int price[], int w,vector <vector<int>> &dp){
+        if(ind == 0){
+            return w  * price[0];
         }
-        int npick=solve(ind-1,price,len,tar,dp);
-        int pick=INT_MIN;
-        if(len[ind]<=tar){
-            pick=price[ind]+solve(ind,price,len,tar-len[ind],dp);
+        if(dp[ind][w] != -1) return dp[ind][w];
+        int pick = INT_MIN;
+        if(ind + 1 <= w){
+            pick = price[ind] + solve(ind, price, w - (ind + 1),dp);
         }
-        return dp[ind][tar]=max(pick,npick);
-        
+        int notpick = solve(ind - 1, price, w,dp);
+        return dp[ind][w] = max(pick, notpick);
     }
     int cutRod(int price[], int n) {
-        //code here
-        vector<int>len;
-        for(int i=1;i<=n;i++){
-            len.push_back(i);
-        }
-        vector<vector<int>>dp(n+1,vector<int>(n+1,-1));
-        return solve(n-1,price,len,n,dp);
+        // code here
+        vector <vector<int>> dp(n , vector<int>(n + 1, -1));
+        return solve(n - 1, price, n,dp);
     }
 };
 
