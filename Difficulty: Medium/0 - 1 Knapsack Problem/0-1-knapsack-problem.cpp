@@ -7,24 +7,30 @@ using namespace std;
 class Solution {
   public:
     // Function to return max value that can be put in knapsack of capacity W.
-    int solve(int w,vector<int>&wt,vector<int>&val,int ind){
-        if(ind==0){
-            if(wt[ind]<=w){
-                return val[ind];
+    int solve(vector<int> &val, vector<int> &wt, int w,int ind, vector<vector<int>> &dp){
+        if(ind == 0){
+            if(wt[0] <= w){
+                return val[0];
             }
             else return 0;
         }
-        int npick=solve(w,wt,val,ind-1);
-        int pick=INT_MIN;
-        if(wt[ind]<=w){
-            pick=val[ind]+solve(w-wt[ind],wt,val,ind-1);
+        if(ind - 1 < 0){
+            return 0;
         }
-        return max(pick,npick);
+        if(dp[ind][w] != -1) return dp[ind][w];
+        int pick = 0;
+        if(wt[ind] <= w){
+            pick = val[ind] + solve(val,wt,w - wt[ind],ind - 1, dp);
+        }
+        int notpick = 0 + solve(val,wt,w, ind - 1, dp);
+        
+        return dp[ind][w] = max(pick,notpick);
     }
     int knapSack(int w, vector<int>& wt, vector<int>& val) {
         // Your code here
-        int n=val.size();
-        return solve(w,wt,val,n-1);
+        int n = wt.size();
+        vector<vector<int>>dp(n,vector<int>(w+1,-1));
+        return solve(val,wt,w,n - 1,dp);
     }
 };
 
