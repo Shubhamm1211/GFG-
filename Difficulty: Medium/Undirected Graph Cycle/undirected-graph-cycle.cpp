@@ -2,39 +2,43 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+
 // } Driver Code Ends
 class Solution {
   public:
-    // Function to detect cycle in an undirected graph.
-    bool help(int node,vector<int>adj[],vector<int>&vis){
-        queue<pair<int,int>>q;
-        q.push({node,-1});
-        vis[node]=1;
+    bool check(int node, vector<vector<int>>& adj, vector<int> &vis){
+        queue<pair<int,int>> q;
+        q.push({node, -1});
+        vis[node] = 1;
         while(!q.empty()){
-            int n=q.front().first;
-            int p=q.front().second;
+            auto x = q.front();
             q.pop();
-            for(auto it:adj[n]){
-                if(!vis[it]){
-                    vis[it]=1;
-                    q.push({it,n});
+            int nn = x.first;
+            int p = x.second;
+            for(auto x : adj[nn]){
+                if(!vis[x]){
+                    vis[x] = 1;  
+                    q.push({x,nn});
                 }
-                else if(it!=p)return true;
+                else if(x != p){
+                    return true;
+                }
             }
         }
         return false;
     }
-    bool isCycle(int V, vector<int> adj[]) {
+    // Function to detect cycle in an undirected graph.
+    bool isCycle(vector<vector<int>>& adj) {
         // Code here
-        bool f=false;
-        vector<int>vis(V,0);
-        for(int i=0;i<V;i++){
+        int n = adj.size();
+        vector <int> vis(n + 1, 0);
+        for(int i = 0; i < n; i++){
             if(!vis[i]){
-                if(help(i,adj,vis))return true;
+                if(check(i,adj,vis)) return true;
             }
         }
-        
         return false;
+        
     }
 };
 
@@ -45,7 +49,7 @@ int main() {
     while (tc--) {
         int V, E;
         cin >> V >> E;
-        vector<int> adj[V];
+        vector<vector<int>> adj(V);
         for (int i = 0; i < E; i++) {
             int u, v;
             cin >> u >> v;
@@ -53,11 +57,14 @@ int main() {
             adj[v].push_back(u);
         }
         Solution obj;
-        bool ans = obj.isCycle(V, adj);
+        bool ans = obj.isCycle(adj);
         if (ans)
             cout << "1\n";
         else
             cout << "0\n";
+
+        cout << "~"
+             << "\n";
     }
     return 0;
 }
