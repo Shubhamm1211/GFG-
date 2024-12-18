@@ -6,40 +6,61 @@ using namespace std;
 // } Driver Code Ends
 class Solution {
   public:
-    bool check(int node, vector<vector<int>>& adj, vector<int> &vis){
-        queue<pair<int,int>> q;
-        q.push({node, -1});
-        vis[node] = 1;
-        while(!q.empty()){
-            auto x = q.front();
-            q.pop();
-            int nn = x.first;
-            int p = x.second;
-            for(auto x : adj[nn]){
-                if(!vis[x]){
-                    vis[x] = 1;  
-                    q.push({x,nn});
-                }
-                else if(x != p){
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
     // Function to detect cycle in an undirected graph.
-    bool isCycle(vector<vector<int>>& adj) {
-        // Code here
-        int n = adj.size();
-        vector <int> vis(n + 1, 0);
-        for(int i = 0; i < n; i++){
-            if(!vis[i]){
-                if(check(i,adj,vis)) return true;
+    // bool dfs(int node,int par, vector<int>&vis, vector<vector<int>> &adj){
+    //     vis[node] = 1;
+    //     for(auto x : adj[node]){
+    //         if(!vis[x]){
+    //             if(dfs(x,node,vis,adj)){
+    //                 return true;
+    //             }
+    //             else if(x != par) return true;
+    //         }
+    //     }
+    //     return false;
+        
+    // }
+    // bool isCycle(vector<vector<int>>& adj) {
+    //     // Code here
+    //     int n = adj.size();
+    //     vector <int> vis(n + 1,0);
+    //     for(int i = 0; i < n; i++){
+    //         if(!vis[i]){
+    //             if(dfs(i,-1,vis,adj)) return true;  
+    //         }
+    //     }
+    //     return false;
+        
+    // }
+    bool dfs(int node, int par, vector<int>& vis, vector<vector<int>>& adj) {
+    vis[node] = 1; // Mark the current node as visited
+    for (auto x : adj[node]) {
+        if (!vis[x]) { 
+            // If the node is unvisited, continue DFS
+            if (dfs(x, node, vis, adj)) {
+                return true; // Cycle found
+            }
+        } else if (x != par) {
+            // If the node is visited and is not the parent, cycle exists
+            return true;
+        }
+    }
+    return false;
+}
+
+bool isCycle(vector<vector<int>>& adj) {
+    int n = adj.size();
+    vector<int> vis(n, 0); // Adjust size to 'n'
+    for (int i = 0; i < n; i++) {
+        if (!vis[i]) { // Check unvisited nodes
+            if (dfs(i, -1, vis, adj)) {
+                return true; // Cycle found
             }
         }
-        return false;
-        
     }
+    return false; // No cycle found
+}
+
 };
 
 //{ Driver Code Starts.
