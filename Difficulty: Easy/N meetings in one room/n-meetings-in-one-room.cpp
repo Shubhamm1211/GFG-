@@ -5,19 +5,21 @@ using namespace std;
 
 // } Driver Code Ends
 
-bool cmp(pair<int,int>&a, pair<int,int>&b){
-    if(a.second == b.second){
-        return a.first < b.first;
+bool cmp(pair<int,int> &a, pair<int,int> &b){
+        if(a.second == b.second){
+            return a.first < b.first;
+        }
+        return a.second < b.second;
     }
-    return a.second < b.second;
-}
 class Solution {
   public:
     // Function to find the maximum number of meetings that can
     // be performed in a meeting room.
-    int maxMeetings(int n, int start[], int end[]) {
+    
+    int maxMeetings(vector<int>& start, vector<int>& end) {
         // Your code here
-        vector<pair<int,int>> v;
+       vector<pair<int,int>> v;
+       int n = start.size();
         for(int i = 0; i < n; i++){
             v.push_back({start[i],end[i]});
         }
@@ -31,26 +33,39 @@ class Solution {
             }
         }
         return ans;
+        
     }
 };
 
 //{ Driver Code Starts.
+
 int main() {
+
     int t;
     cin >> t;
+    cin.ignore();
     while (t--) {
-        int n;
-        cin >> n;
-        int start[n], end[n];
-        for (int i = 0; i < n; i++)
-            cin >> start[i];
+        string input;
+        int num;
+        vector<int> start;
 
-        for (int i = 0; i < n; i++)
-            cin >> end[i];
+        getline(cin, input);
+        stringstream s2(input);
+        while (s2 >> num) {
+            start.push_back(num);
+        }
+
+        vector<int> end;
+        getline(cin, input);
+        stringstream s22(input);
+        while (s22 >> num) {
+            end.push_back(num);
+        }
 
         Solution ob;
-        int ans = ob.maxMeetings(n, start, end);
+        int ans = ob.maxMeetings(start, end);
         cout << ans << endl;
+        cout << "~" << endl;
     }
     return 0;
 }
