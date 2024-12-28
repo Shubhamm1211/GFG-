@@ -9,22 +9,32 @@ class Solution {
   public:
     vector<vector<int>> findTriplets(vector<int> &arr) {
         // Code here
-        // int n = arr.size();
-        // vector <vector <int>> ans;
-        // map <int,int> mp;
-        // for(int i = 0; i < n; i++){
-        //     for(int j = i + 1; j < n; j++){
-        //         int tar = -1 *(arr[i] + arr[j]);
-        //         if(mp.find(tar) != mp.end() and mp[tar] < i){
-        //             ans.push_back({mp[tar],i,j});
-        //         }
-        //     }
-        //     mp[arr[i]] = i;
-        // }
-
-        // set < vector <int> > st(begin(ans), end(ans));
-        // vector <vector <int>> res (begin(st), end(st));
-        // return res;
+        int n = arr.size();
+    vector<vector<int>> ans;
+    set<vector<int>> st;
+    
+    // First build the complete map
+    unordered_map<int,int> mp;
+    for(int i = 0; i < n; i++) {
+        mp[arr[i]] = i;
+    }
+    
+    // Then look for triplets
+    for(int i = 0; i < n - 1; i++) {
+        for(int j = i + 1; j < n; j++) {
+            int target = -1 * (arr[i] + arr[j]);
+            if(mp.find(target) != mp.end()) {
+                int k = mp[target];
+                if(k != i && k != j) {
+                    vector<int> temp = {i, j, k};
+                    sort(temp.begin(), temp.end());
+                    st.insert(temp);
+                }
+            }
+        }
+    }
+    
+    return vector<vector<int>>(st.begin(), st.end());
         // map<int,int> mp;
         // for(int i = 0; i < n; i++) mp[arr[i]] = i
         // sort(begin(arr), end(arr));
@@ -51,31 +61,31 @@ class Solution {
         //     }
         // }
         // return ans;
-        int n=arr.size();
-        unordered_map<int,int>mapp;
-        set<vector<int>>st;
+        // int n=arr.size();
+        // unordered_map<int,int>mapp;
+        // set<vector<int>>st;
         
-        for(int i=0;i<n;i++){
-            mapp[arr[i]]=i;
-        }
+        // for(int i=0;i<n;i++){
+        //     mapp[arr[i]]=i;
+        // }
         
-        for(int j=0;j<n-1;j++){
-            for(int k=j+1;k<n;k++){
-                int sum=arr[j]+arr[k];
-                int rem=0-sum;
+        // for(int j=0;j<n-1;j++){
+        //     for(int k=j+1;k<n;k++){
+        //         int sum=arr[j]+arr[k];
+        //         int rem=0-sum;
                 
-                if(mapp.find(rem)!=mapp.end()){
-                    int i=mapp[rem];
-                    if(i!=j && i!=k){
-                        vector<int>temp{i,j,k}; 
-                        sort(temp.begin(),temp.end());
-                        st.insert(temp);
-                    }
-                }
-            }
-        }
-        vector<vector<int>>res(st.begin(),st.end());
-        return res;
+        //         if(mapp.find(rem)!=mapp.end()){
+        //             int i=mapp[rem];
+        //             if(i!=j && i!=k){
+        //                 vector<int>temp{i,j,k}; 
+        //                 sort(temp.begin(),temp.end());
+        //                 st.insert(temp);
+        //             }
+        //         }
+        //     }
+        // }
+        // vector<vector<int>>res(st.begin(),st.end());
+        // return res;
     
     }
 };
