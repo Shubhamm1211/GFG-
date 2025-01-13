@@ -12,16 +12,12 @@ class Solution {
     int right = arr.size() - 1;
     int maxArea = 0;
     
-    while (left < right) {
-        int width = right - left;
-        int height = min(arr[left], arr[right]);
-        int area = width * height;
-        maxArea = max(maxArea, area);
-        if (arr[left] < arr[right]) {
+    while(left < right){
+        maxArea = max(maxArea, min(arr[left],arr[right]) * (right - left));
+        if(arr[left] < arr[right]){
             left++;
-        } else {
-            right--;
         }
+        else right--;
     }
     
     return maxArea;
