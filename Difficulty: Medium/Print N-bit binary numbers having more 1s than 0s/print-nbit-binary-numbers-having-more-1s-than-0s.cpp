@@ -23,7 +23,6 @@ public:
 	vector<string> NBitBinary(int n)
 	{
 	    // Your code goes here
-	    ans.clear();
 	    int cnt1 = 0, cnt0 = 0;
 	    string s = "";
 	    solve(n,"",cnt1,cnt0);
