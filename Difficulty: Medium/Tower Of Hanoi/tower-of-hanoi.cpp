@@ -8,23 +8,23 @@ using namespace std;
 class Solution {
   public:
     // You need to complete this function
-    void solve(int n, int from, int to, int aux, int &temp){
+    void solve(int n, int from, int to, int aux, int &ans){
         if(n == 0){
-            return ;
-        }
-        if(n == 1){
-            temp++;
             return;
         }
-        solve(n - 1, from, aux, to,temp);
-        temp++;
-        return solve(n - 1, aux, to, from,temp);
+        if(n == 1){
+            ans++;
+            return;
+        }
+        solve(n - 1, from,aux,to,ans);
+        ans++;
+        solve(n - 1, aux, to, from,ans);
     }
     int towerOfHanoi(int n, int from, int to, int aux) {
         // Your code here
-        int temp = 0;
-        solve(n,from,to,aux,temp);
-        return temp;
+        int ans = 0;
+        solve(n,from,to,aux,ans);
+        return ans;
     }
 };
 
