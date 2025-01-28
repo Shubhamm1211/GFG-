@@ -6,28 +6,26 @@ using namespace std;
 // } Driver Code Ends
 class Solution {
   public:
-  void solve(string ip, string op, vector <string> &ans){
-    if(ip.size() == 0){
-        ans.push_back(op);
-        return;
+    void solve(string &s,int ind, set <string> &ans){
+        if(ind == s.size() - 1){
+            ans.insert(s);
+            return;
+        }
+        for(int i = ind; i < s.size(); i++){
+            swap(s[i],s[ind]);
+            solve(s,ind + 1,ans);
+            swap(s[ind],s[i]);
+        }
     }
-    set <char> st;
-    for(int i = 0; i < ip.size(); i++){
-        if(st.find(ip[i]) != st.end()) continue; // Controled recursion
-        string opi = op;
-        string ipi = ip;
-        opi += ipi[i];
-        ipi.erase(ipi.begin() + i);
-        st.insert(ip[i]);
-        solve(ipi,opi,ans);
-    }
-}
     vector<string> findPermutation(string &s) {
         // Code here there
-        vector <string> ans;
-        string op = "";
-        solve(s,op,ans);
-        return ans;
+        set <string> ans;
+        solve(s,0,ans);
+        vector <string> res;
+        for(auto &x : ans){
+            res.push_back(x);
+        }
+        return res;
     }
 };
 
