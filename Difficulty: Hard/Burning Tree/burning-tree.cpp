@@ -1,5 +1,5 @@
 //{ Driver Code Starts
-//Initial Template for C++
+// Initial Template for C++
 
 #include <bits/stdc++.h>
 using namespace std;
@@ -14,7 +14,6 @@ struct Node {
         left = right = NULL;
     }
 };
-
 
 Node *buildTree(string str) {
     // Corner Case
@@ -80,7 +79,7 @@ Node *buildTree(string str) {
 
 
 // } Driver Code Ends
-//User function Template for C++
+// User function Template for C++
 
 /*
 struct Node {
@@ -96,86 +95,85 @@ struct Node {
 */
 class Solution {
   public:
-    unordered_map<Node*,Node*>mp;
-    void find_parent(Node* root,Node* parent){
-        if(!root) return;
-        if(!parent)parent=root;
-        else mp[root]=parent;
-        find_parent(root->left,root);
-        find_parent(root->right,root);
-    }
-    
-    Node* find_target(Node* root,int target){
-        if(!root) return NULL;
-        if(root->data == target){
-            return root;
-        }
-        Node* lft = find_target(root->left,target);
-        Node* rht = find_target(root->right,target);
-        if(lft){
-            return lft;
-        }else if(rht){
-            return rht;
-        }
-        return NULL;
-    }
-    int minTime(Node* root, int target) 
-    {
-        // Your code goes here
-        Node* t = find_target(root,target);
-        if(t==NULL)return 0;
-        find_parent(root,NULL);
-        set<Node*>st;
-        int ans=0;
-        
-        queue<Node*>q;
-        q.push(t);
+    int minTime(Node* root, int target) {
+        // code here
+        map <Node*, Node*> mp;
+        Node *start;
+        queue <Node*> q;
+        q.push(root);
+        int ans = 0;
         while(!q.empty()){
-            int sz = q.size();
-            while(sz--){
-                Node* temp = q.front();
+            int s = q.size();
+            for(int i = 0; i < s; i++){
+                Node *temp = q.front();
                 q.pop();
-                
-                st.insert(temp);
-                if(temp->left && !st.count(temp->left)){
-                    q.push(temp->left);
+                if(temp -> data == target){
+                    start = temp;
                 }
-                if(temp->right && !st.count(temp->right)){
-                    q.push(temp->right);
+                if(temp -> left){
+                    mp[temp -> left] = temp;
+                    q.push(temp -> left);
                 }
-                if(mp.find(temp)!=mp.end() && !st.count(mp[temp])){
-                    q.push(mp[temp]);
+                if(temp -> right){
+                    mp[temp -> right] = temp;
+                    q.push(temp -> right);
                 }
             }
-            ans++;
         }
-        return ans-1;
+        queue <Node*> q2;
+        q2.push(start);
+        map <Node*, int> vis;
+        vis[start] = 1;
+        while(!q2.empty()){
+            int s = q2.size();
+            bool f = false;
+            for(int i = 0; i < s; i++){
+                Node *temp = q2.front();
+                q2.pop();
+                if(temp -> left and !vis[temp -> left]){
+                    f = true;
+                    vis[temp -> left] = 1;
+                    q2.push(temp -> left);
+                }
+                if(temp -> right and !vis[temp -> right]){
+                    f = true;
+                    vis[temp -> right] = 1;
+                    q2.push(temp -> right);
+                }
+                if(mp[temp] and !vis[mp[temp]]){
+                    f = true;
+                    vis[mp[temp]] = 1;
+                    q2.push(mp[temp]);
+                }
+            }
+            if(f) ans++;
+        }
+        return ans;
     }
 };
 
 //{ Driver Code Starts.
 
-int main() 
-{
+int main() {
     int tc;
     scanf("%d ", &tc);
-    while (tc--) 
-    {    
+    while (tc--) {
         string treeString;
         getline(cin, treeString);
         // cout<<treeString<<"\n";
         int target;
-        cin>>target;
+        cin >> target;
         // cout<<target<<"\n";
 
         Node *root = buildTree(treeString);
         Solution obj;
-        cout<<obj.minTime(root, target)<<"\n"; 
+        cout << obj.minTime(root, target) << "\n";
 
         cin.ignore();
 
+        cout << "~"
+             << "\n";
     }
-
 
     return 0;
 }
