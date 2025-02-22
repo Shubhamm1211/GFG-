@@ -8,27 +8,26 @@ class Solution {
   public:
     // Function to find the minimum number of platforms required at the
     // railway station such that no train waits.
-
     int findPlatform(vector<int>& arr, vector<int>& dep) {
-    sort(arr.begin(), arr.end());  
-    sort(dep.begin(), dep.end());  
-
-    int platforms_needed = 1, max_platforms = 1;
-    int i = 1, j = 0; 
-
-    while (i < arr.size() && j < dep.size()) {
-        if (arr[i] <= dep[j]) {
-            platforms_needed++; 
-            i++;
-        } else {
-            platforms_needed--;
-            j++;
+        // Your code here
+        vector <pair <int,char>> v;
+        int n = arr.size();
+        for(int i = 0; i < n; i++){
+            v.push_back({arr[i],'a'});
+            v.push_back({dep[i],'d'});
         }
-        max_platforms = max(max_platforms, platforms_needed);
+        int cnt = 0;
+        int maxi = 0;
+        sort(begin(v), end(v));
+        for(int i = 0; i < v.size(); i++){
+            if(v[i].second == 'a'){
+                cnt++;
+                maxi = max(maxi, cnt);
+            }
+            else cnt--;
+        }
+        return maxi;
     }
-    
-    return max_platforms;
-}
 };
 
 
