@@ -91,38 +91,41 @@ Node* buildTree(string str)
 
 
 // } Driver Code Ends
+
 //Function to return a list containing the bottom view of the given tree.
 
 class Solution {
   public:
-    vector <int> bottomView(Node *root) {
-        vector<int> ans; 
-        if(root == NULL) return ans; 
-        map<int,int> mpp; 
-        queue<pair<Node*, int>> q; 
-        q.push({root, 0}); 
-        while(!q.empty()) {
-            auto it = q.front(); 
-            q.pop(); 
-            Node* node = it.first; 
-            int line = it.second; 
-            mpp[line] = node->data; 
-            
-            if(node->left != NULL) {
-                q.push({node->left, line-1}); 
+    vector<int> bottomView(Node *root) {
+        // code here
+        map <int,int> mp;
+        queue <pair <Node*,int>> q;
+        q.push({root,0});
+        while(!q.empty()){
+            int n = q.size();
+            for(int i = 0; i < n; i++){
+                Node *temp = q.front().first;
+                int ind = q.front().second;
+                q.pop();
+                // if(mp.find(ind) == mp.end()){
+                    mp[ind] = temp -> data;
+    
+                if(temp -> left){
+                    q.push({temp -> left, ind - 1});
+                }
+                if(temp -> right){
+                    q.push({temp -> right, ind + 1});
+                }
             }
-            if(node->right != NULL) {
-                q.push({node->right, line + 1}); 
-            }
-            
         }
-        
-        for(auto it : mpp) {
-            ans.push_back(it.second); 
+        vector <int> ans;
+        for(auto &x : mp){
+            ans.push_back(x.second);
         }
-        return ans;  
+        return ans;
     }
 };
+
 
 //{ Driver Code Starts.
 
@@ -140,7 +143,9 @@ int main() {
         vector <int> res = ob.bottomView(root);
         for (int i : res) cout << i << " ";
         cout << endl;
-    }
+    
+cout << "~" << "\n";
+}
     return 0;
 }
 
