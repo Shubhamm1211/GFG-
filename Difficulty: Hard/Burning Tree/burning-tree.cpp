@@ -79,6 +79,7 @@ Node *buildTree(string str) {
 
 
 // } Driver Code Ends
+
 // User function Template for C++
 
 /*
@@ -95,62 +96,54 @@ struct Node {
 */
 class Solution {
   public:
+    Node *tar;
+    void *inorder(Node *root, map<Node*,Node*> &mp, int target){
+        if(!root) return NULL;
+        if(root -> left){
+            mp[root -> left] = root;
+            inorder(root -> left,mp, target);
+        }
+        if(root -> data == target){
+            tar = root;
+        }
+        if(root -> right){
+            mp[root -> right] = root;
+            inorder(root -> right, mp, target);
+        }
+    }
     int minTime(Node* root, int target) {
         // code here
-        map <Node*, Node*> mp;
-        Node *start;
+        map <Node*,Node*> mp;
+        inorder(root,mp,target);
         queue <Node*> q;
-        q.push(root);
+        q.push(tar);
+        map <Node*, bool> vis;
+        vis[tar] = true;
         int ans = 0;
         while(!q.empty()){
-            int s = q.size();
-            for(int i = 0; i < s; i++){
+            int n = q.size();
+            for(int i = 0; i < n; i++){
                 Node *temp = q.front();
                 q.pop();
-                if(temp -> data == target){
-                    start = temp;
-                }
-                if(temp -> left){
-                    mp[temp -> left] = temp;
-                    q.push(temp -> left);
-                }
-                if(temp -> right){
-                    mp[temp -> right] = temp;
-                    q.push(temp -> right);
-                }
-            }
-        }
-        queue <Node*> q2;
-        q2.push(start);
-        map <Node*, int> vis;
-        vis[start] = 1;
-        while(!q2.empty()){
-            int s = q2.size();
-            bool f = false;
-            for(int i = 0; i < s; i++){
-                Node *temp = q2.front();
-                q2.pop();
                 if(temp -> left and !vis[temp -> left]){
-                    f = true;
-                    vis[temp -> left] = 1;
-                    q2.push(temp -> left);
+                    q.push(temp -> left);
+                    vis[temp -> left] = true;
                 }
                 if(temp -> right and !vis[temp -> right]){
-                    f = true;
-                    vis[temp -> right] = 1;
-                    q2.push(temp -> right);
+                    q.push(temp -> right);
+                    vis[temp -> right] = true;
                 }
-                if(mp[temp] and !vis[mp[temp]]){
-                    f = true;
-                    vis[mp[temp]] = 1;
-                    q2.push(mp[temp]);
+                if(mp.find(temp) != mp.end() and !vis[mp[temp]]){
+                    q.push(mp[temp]);
+                    vis[mp[temp]] = true;
                 }
             }
-            if(f) ans++;
+            ans++;
         }
-        return ans;
+        return ans - 1;
     }
 };
+
 
 //{ Driver Code Starts.
 
